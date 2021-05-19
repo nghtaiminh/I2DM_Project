@@ -11,10 +11,10 @@ import java.io.File;
 public class csvtoarff {
     public static void main(String[] args) throws Exception{
     	
-    	Instances entire_data = DataSource.read("DataMining\\data\\transaction_data.csv");
-        Instances cluster1 = DataSource.read("DataMining\\data\\cluster_1_transaction_data.csv");
-        Instances cluster2 = DataSource.read("DataMining\\data\\cluster_2_transaction_data.csv");
-        Instances cluster3 = DataSource.read("DataMining\\data\\cluster_3_transaction_data.csv");
+    	Instances entire_data = DataSource.read("src\\data\\transaction_data.csv");
+        Instances cluster1 = DataSource.read("src\\data\\cluster_1_transaction_data.csv");
+        Instances cluster2 = DataSource.read("src\\data\\cluster_2_transaction_data.csv");
+        Instances cluster3 = DataSource.read("src\\data\\cluster_3_transaction_data.csv");
        
         entire_data.setClassIndex(cluster1.numAttributes()-1);
         cluster1.setClassIndex(cluster1.numAttributes()-1);
@@ -51,26 +51,26 @@ public class csvtoarff {
 		//Save data as .arff file
 		ArffSaver saver = new ArffSaver();
         saver.setInstances(entire_data);
-        saver.setFile(new File("DataMining\\data\\transaction_data.arff"));
+        saver.setFile(new File("src\\data\\transaction_data.arff"));
         saver.writeBatch();
 		
         ArffSaver saver1 = new ArffSaver();
         saver1.setInstances(cluster1);
-        saver1.setFile(new File("DataMining\\data\\cluster_1_transaction_data.arff"));
+        saver1.setFile(new File("src\\data\\cluster_1_transaction_data.arff"));
         saver1.writeBatch();
         
         ArffSaver saver2 = new ArffSaver();
         saver2.setInstances(cluster2);
-        saver2.setFile(new File("DataMining\\data\\cluster_2_transaction_data.arff"));
+        saver2.setFile(new File("src\\data\\cluster_2_transaction_data.arff"));
         saver2.writeBatch();
         
         ArffSaver saver3 = new ArffSaver();
         saver3.setInstances(cluster3);
-        saver3.setFile(new File("DataMining\\data\\cluster_3_transaction_data.arff"));
+        saver3.setFile(new File("src\\data\\cluster_3_transaction_data.arff"));
         saver3.writeBatch();
         
         
-        System.out.println ("All files have been converted into arrf file");
+        System.out.println ("All files have been converted into arrf file!");
     }
 }
 
