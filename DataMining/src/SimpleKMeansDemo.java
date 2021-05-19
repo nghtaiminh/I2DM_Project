@@ -1,4 +1,4 @@
-import cluster.SimpleKMeansCluster;
+import clusterer.SimpleKMeansCluster;
 
 public class SimpleKMeansDemo {
     public static void main(String[] args) throws Exception {

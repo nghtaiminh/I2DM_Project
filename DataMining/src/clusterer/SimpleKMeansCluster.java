@@ -1,4 +1,4 @@
-package cluster;
+package clusterer;
 
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
