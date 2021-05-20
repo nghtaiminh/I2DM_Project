@@ -8,9 +8,10 @@ import weka.associations.FPGrowth;
 import weka.associations.Item;
 import weka.core.Instances;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -40,21 +41,40 @@ public class FPgrowth extends KnowledgeModel {
         return fp.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void printFrequentItemset(){
+    public void saveFrequentItemset(String path) {
         AssociationRules associationRules = this.fp.getAssociationRules();
         List<AssociationRule> listAssociattionRule = associationRules.getRules();
 
-        // Using set to avoid duplication
-        HashSet<Collection<Item>> itemSets = new HashSet<>();
-        for (AssociationRule ar : listAssociattionRule) {
-            itemSets.add(ar.getPremise());
+        HashMap<Collection<Item>, Integer> frequentItemSets = new HashMap<>();
+        for (AssociationRule ar : listAssociattionRule){
+            Collection<Item> itemSet = ar.getConsequence();
+            if (!frequentItemSets.keySet().contains(itemSet)){
+                frequentItemSets.put(itemSet, ar.getConsequenceSupport());
+            }else{
+                continue;
+            }
         }
-
-        // print frequent itemset
-        for (Collection<Item> c : itemSets ){
-            System.out.println(c.toString());
+        try{
+            FileWriter fileWriter = new FileWriter("..\\data\\frequentItemsets.arff");
+            fileWriter.write("@RELATION frequent_item_set\n" +
+                    "@ATTRIBUTE item_set string\n");
+            fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
+                    "@DATA\n");
+            for (Collection<Item> fi : frequentItemSets.keySet() ){
+                ArrayList<String> items = new ArrayList<>();
+                for (Item i : fi){
+                    items.add(i.toString().split("=")[0]);
+                }
+                fileWriter.write(String.join(";", items));
+                fileWriter.write("," + frequentItemSets.get(fi).toString() + "\n");
+            }
+            fileWriter.close();
+            System.out.println("write successfully");
+        }catch (IOException e){
+            System.out.println("Write file error");
         }
     }
+}
     
     
 }
