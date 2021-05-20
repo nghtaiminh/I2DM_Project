@@ -47,7 +47,8 @@ public class FPgrowth extends KnowledgeModel {
 
         HashMap<Collection<Item>, Integer> frequentItemSets = new HashMap<>();
         for (AssociationRule ar : listAssociattionRule){
-            Collection<Item> itemSet = ar.getConsequence();
+            Collection<Item> itemSet = ar.getPremise();
+            itemSet.addAll(ar.getConsequence());
             if (!frequentItemSets.keySet().contains(itemSet)){
                 frequentItemSets.put(itemSet, ar.getConsequenceSupport());
             }else{
@@ -55,7 +56,7 @@ public class FPgrowth extends KnowledgeModel {
             }
         }
         try{
-            FileWriter fileWriter = new FileWriter("..\\data\\frequentItemsets.arff");
+            FileWriter fileWriter = new FileWriter(path);
             fileWriter.write("@RELATION frequent_item_set\n" +
                     "@ATTRIBUTE item_set string\n");
             fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
