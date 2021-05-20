@@ -2,8 +2,15 @@ package fp_growth;
 
 
 
+import weka.associations.AssociationRule;
+import weka.associations.AssociationRules;
 import weka.associations.FPGrowth;
+import weka.associations.Item;
 import weka.core.Instances;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -33,7 +40,21 @@ public class FPgrowth extends KnowledgeModel {
         return fp.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
+    public void printFrequentItemset(){
+        AssociationRules associationRules = this.fp.getAssociationRules();
+        List<AssociationRule> listAssociattionRule = associationRules.getRules();
+
+        // Using set to avoid duplication
+        HashSet<Collection<Item>> itemSets = new HashSet<>();
+        for (AssociationRule ar : listAssociattionRule) {
+            itemSets.add(ar.getPremise());
+        }
+
+        // print frequent itemset
+        for (Collection<Item> c : itemSets ){
+            System.out.println(c.toString());
+        }
+    }
     
     
 }
