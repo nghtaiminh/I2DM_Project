@@ -50,7 +50,7 @@ public class FPgrowth extends KnowledgeModel {
             Collection<Item> itemSet = ar.getPremise();
             itemSet.addAll(ar.getConsequence());
             if (!frequentItemSets.keySet().contains(itemSet)){
-                frequentItemSets.put(itemSet, ar.getConsequenceSupport());
+                frequentItemSets.put(itemSet, ar.getTotalSupport());
             }else{
                 continue;
             }
