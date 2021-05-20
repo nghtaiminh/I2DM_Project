@@ -76,6 +76,3 @@ public class FPgrowth extends KnowledgeModel {
         }
     }
 }
-    
-    
-}
