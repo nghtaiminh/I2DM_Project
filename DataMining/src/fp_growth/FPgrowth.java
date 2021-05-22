@@ -1,7 +1,5 @@
 package fp_growth;
 
-
-
 import weka.associations.AssociationRule;
 import weka.associations.AssociationRules;
 import weka.associations.FPGrowth;
@@ -34,6 +32,11 @@ public class FPgrowth extends KnowledgeModel {
         fp.setOptions(this.model_options);
         //khai pha
         fp.buildAssociations(this.newData);
+    }
+
+    // get association rules
+    public List<AssociationRule> getAssociationRules(){
+        return fp.getAssociationRules().getRules();
     }
 
     @Override
