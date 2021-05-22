@@ -60,10 +60,10 @@ public class FPgrowth extends KnowledgeModel {
         }
         try{
             FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write("@RELATION frequent_item_set\n" +
-                    "@ATTRIBUTE item_set string\n");
-            fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
-                    "@DATA\n");
+//            fileWriter.write("@RELATION frequent_item_set\n" +
+//                    "@ATTRIBUTE item_set string\n");
+//            fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
+//                    "@DATA\n");
             for (Collection<Item> fi : frequentItemSets.keySet() ){
                 ArrayList<String> items = new ArrayList<>();
                 for (Item i : fi){
