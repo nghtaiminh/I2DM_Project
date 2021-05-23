@@ -12,35 +12,52 @@ import weka.core.converters.CSVSaver;
 import java.io.File;
 
 public class SimpleKMeansCluster {
+    private SimpleKMeans skm;
     private FilteredClusterer fc;
     private Instances data;
 
-    public void buildSimpleKMeans() throws Exception{
+    public void buildSimpleKMeans(int numClusters) throws Exception{
         // Load dataset
         String dataset = "PreprocessedDataForCluster.csv";
         DataSource source = new DataSource("src\\data\\"+dataset);
         data = source.getDataSet();
 
         // Configure SimpleKMeans parameters
-        SimpleKMeans skmean = new SimpleKMeans();
-        skmean.setDistanceFunction(new weka.core.EuclideanDistance());
-        skmean.setNumClusters(3);
+        SimpleKMeans skmeans = new SimpleKMeans();
+        skmeans.setDistanceFunction(new weka.core.EuclideanDistance());
+        skmeans.setOptions(weka.core.Utils.splitOptions("-init 0 -max-candidates 100 -periodic-pruning 10000 -min-density 2.0 -t1 -1.25 -t2 -1.0 -N 3 -A \"weka.core.EuclideanDistance -R first-last\" -I 500 -num-slots 1 "));
+        skmeans.setNumClusters(numClusters);
+        skm = skmeans;
         // Create Remove Filter
         Remove remove = new Remove();
         String[] options = new String[2];
         options[0] = "-R";
-        options[1] = "1,2"; // this option is set to ignore InvoiceNo, StockCode attr
+        options[1] = "1"; // this option is set to ignore CustomerID
         remove.setOptions(options);
         remove.setInputFormat(data);
 
         // build FilterClusterer with SimpleKMean
         FilteredClusterer filteredClusterer = new FilteredClusterer();
         filteredClusterer.setFilter(remove);
-        filteredClusterer.setClusterer(skmean);
+        filteredClusterer.setClusterer(skmeans);
         filteredClusterer.buildClusterer(data);
         fc = filteredClusterer;
-        System.out.println(filteredClusterer.toString());
+//        System.out.println(filteredClusterer.toString());
     }
+
+    public void getCentroids() {
+        Instances instances = skm.getClusterCentroids();
+        System.out.println(instances);
+    }
+
+    public double getSquaredError() {
+        return skm.getSquaredError();
+    }
+
+    public void getSummary() {
+        System.out.println(fc.toString());
+    }
+
 
     public void saveModel() throws Exception {
         weka.core.SerializationHelper.write("src\\skmean_cluster_model.model", fc);
@@ -54,7 +71,7 @@ public class SimpleKMeansCluster {
         Instances newData = Filter.useFilter(data, addCluster);
         CSVSaver saver = new CSVSaver();
         saver.setInstances(newData);
-        saver.setFile(new File("src\\data\\NewDataAfterCluster.csv"));
+        saver.setFile(new File("src\\data\\clusteredData.csv"));
         saver.writeBatch();
         System.out.println("New data is exported successfully!");
     }

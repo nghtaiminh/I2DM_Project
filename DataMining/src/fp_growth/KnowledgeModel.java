@@ -24,8 +24,8 @@ public class KnowledgeModel {
     public KnowledgeModel() {
     }
 
-    public KnowledgeModel(String filename, String m_options, String d_options) throws Exception {
-        this.source = new DataSource(filename);
+    public KnowledgeModel(String filepath, String m_options, String d_options) throws Exception {
+        this.source = new DataSource(filepath);
         this.dataset = source.getDataSet();
         this.model_options = weka.core.Utils.splitOptions(m_options);
         this.data_options = weka.core.Utils.splitOptions(d_options);

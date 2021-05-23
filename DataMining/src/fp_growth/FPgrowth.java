@@ -1,7 +1,5 @@
 package fp_growth;
 
-
-
 import weka.associations.AssociationRule;
 import weka.associations.AssociationRules;
 import weka.associations.FPGrowth;
@@ -36,6 +34,11 @@ public class FPgrowth extends KnowledgeModel {
         fp.buildAssociations(this.newData);
     }
 
+    // get association rules
+    public List<AssociationRule> getAssociationRules(){
+        return fp.getAssociationRules().getRules();
+    }
+
     @Override
     public String toString() {
         return fp.toString(); //To change body of generated methods, choose Tools | Templates.
@@ -47,19 +50,20 @@ public class FPgrowth extends KnowledgeModel {
 
         HashMap<Collection<Item>, Integer> frequentItemSets = new HashMap<>();
         for (AssociationRule ar : listAssociattionRule){
-            Collection<Item> itemSet = ar.getConsequence();
+            Collection<Item> itemSet = ar.getPremise();
+            itemSet.addAll(ar.getConsequence());
             if (!frequentItemSets.keySet().contains(itemSet)){
-                frequentItemSets.put(itemSet, ar.getConsequenceSupport());
+                frequentItemSets.put(itemSet, ar.getTotalSupport());
             }else{
                 continue;
             }
         }
         try{
-            FileWriter fileWriter = new FileWriter("..\\data\\frequentItemsets.arff");
-            fileWriter.write("@RELATION frequent_item_set\n" +
-                    "@ATTRIBUTE item_set string\n");
-            fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
-                    "@DATA\n");
+            FileWriter fileWriter = new FileWriter(path);
+//            fileWriter.write("@RELATION frequent_item_set\n" +
+//                    "@ATTRIBUTE item_set string\n");
+//            fileWriter.write("@ATTRIBUTE support NUMERIC\n" +
+//                    "@DATA\n");
             for (Collection<Item> fi : frequentItemSets.keySet() ){
                 ArrayList<String> items = new ArrayList<>();
                 for (Item i : fi){
@@ -74,7 +78,4 @@ public class FPgrowth extends KnowledgeModel {
             System.out.println("Write file error");
         }
     }
-}
-    
-    
 }
