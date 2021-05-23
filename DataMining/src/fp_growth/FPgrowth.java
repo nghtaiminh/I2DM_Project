@@ -26,11 +26,11 @@ public class FPgrowth extends KnowledgeModel {
     }
 
     public void mineAssociationRules() throws Exception {
-        //loc du lieu
+       
         this.newData = removeData(this.dataset);
-        //thiet lap thong so
+        
         fp.setOptions(this.model_options);
-        //khai pha
+       
         fp.buildAssociations(this.newData);
     }
 
@@ -41,7 +41,7 @@ public class FPgrowth extends KnowledgeModel {
 
     @Override
     public String toString() {
-        return fp.toString(); //To change body of generated methods, choose Tools | Templates.
+        return fp.toString(); 
     }
 
     public void saveFrequentItemset(String path) {

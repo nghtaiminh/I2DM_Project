@@ -17,8 +17,8 @@ public class csvtoarff {
         Instances cluster2 = DataSource.read("src\\data\\cluster_2_transaction_data.csv");
         Instances cluster3 = DataSource.read("src\\data\\cluster_3_transaction_data.csv");
        
-        entire_data_train.setClassIndex(cluster1.numAttributes()-1);
-        entire_data_test.setClassIndex(cluster1.numAttributes()-1);
+        entire_data_train.setClassIndex(entire_data_train.numAttributes()-1);
+        entire_data_test.setClassIndex(entire_data_test.numAttributes()-1);
         cluster1.setClassIndex(cluster1.numAttributes()-1);
         cluster2.setClassIndex(cluster2.numAttributes()-1);
         cluster3.setClassIndex(cluster3.numAttributes()-1);
@@ -37,7 +37,7 @@ public class csvtoarff {
 		numericToNominal2.setInputFormat(cluster2);
 		
 		 NumericToNominal numericToNominal3 = new NumericToNominal();
-		numericToNominal3.setInputFormat(cluster3);
+		numericToNominal3.setInputFormat(cluster3); 
 		
 		String[] options= new String[2];
 		options[0] = "-R";
@@ -78,7 +78,7 @@ public class csvtoarff {
         ArffSaver saver3 = new ArffSaver();
         saver3.setInstances(cluster3);
         saver3.setFile(new File("src\\data\\cluster_3_transaction_data.arff"));
-        saver3.writeBatch();
+        saver3.writeBatch(); 
         
         
         System.out.println ("All files have been converted into arrf file!");
