@@ -16,11 +16,16 @@ public class FPGrowthDemo {
 
     public static void main(String[] args) throws Exception {
 
-        FPgrowth model = new FPgrowth("src\\data\\transaction_data.arff", "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.01 -S", "-R 1");
+        FPgrowth model = new FPgrowth("src\\data\\transactionDataByCusID_train.arff", "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.01 -S", "-R 1");
         model.mineAssociationRules();
         model.saveFrequentItemset("src\\data\\itemset_entiredata.arff");
-        System.out.println("Association Rules for Entire data" + model);
+        System.out.println("Association Rules for Entire train data" + model);
 
+        FPgrowth model0 = new FPgrowth("src\\data\\transactionDataByCusID_test.arff", "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.01 -S", "-R 1");
+        model0.mineAssociationRules();
+        model0.saveFrequentItemset("src\\data\\itemset_entiredata.arff");
+        System.out.println("Association Rules for Entire test data " + model0);
+        
         FPgrowth model_cluster1 = new FPgrowth("src\\data\\cluster_1_transaction_data.arff", "-P 2 -I -1 -N 10 -T 0 -C 0.9 -D 0.05 -U 1.0 -M 0.01 -S", "-R 1");
         model_cluster1.mineAssociationRules();
         model_cluster1.saveFrequentItemset("src\\data\\itemsets_cluster1.arff");

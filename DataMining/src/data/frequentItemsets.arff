@@ -1,8 +1,0 @@
-@RELATION frequent_item_set
-@ATTRIBUTE item_set string
-@ATTRIBUTE support NUMERIC
-@DATA
-22382,320
-20725,379
-22578,232
-22726,303
