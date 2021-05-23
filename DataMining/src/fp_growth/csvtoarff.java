@@ -5,6 +5,7 @@ import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.NumericToNominal;
+import weka.filters.unsupervised.attribute.NumericToBinary;
 import weka.core.converters.ArffSaver;
 import java.io.File;
  
@@ -15,44 +16,51 @@ public class csvtoarff {
     	Instances entire_data_test = DataSource.read("src\\data\\transactionDataByCusID_test.csv");
         Instances cluster1 = DataSource.read("src\\data\\cluster_1_transaction_data.csv");
         Instances cluster2 = DataSource.read("src\\data\\cluster_2_transaction_data.csv");
-        Instances cluster3 = DataSource.read("src\\data\\cluster_3_transaction_data.csv");
+        Instances cluster3 = DataSource.read("src\\data\\cluster_3_transaction_data.csv"); 
        
-        entire_data_train.setClassIndex(entire_data_train.numAttributes()-1);
-        entire_data_test.setClassIndex(entire_data_test.numAttributes()-1);
-        cluster1.setClassIndex(cluster1.numAttributes()-1);
-        cluster2.setClassIndex(cluster2.numAttributes()-1);
-        cluster3.setClassIndex(cluster3.numAttributes()-1);
+        entire_data_train.setClassIndex(-1);
+        entire_data_test.setClassIndex(-1);
+        cluster1.setClassIndex(-1);
+        cluster2.setClassIndex(-1);
+        cluster3.setClassIndex(-1);
         
-        //Numeric to Nominal
-        NumericToNominal numericToNominal = new NumericToNominal();
-		numericToNominal.setInputFormat(entire_data_train);
+        //Numeric to Binary
+        NumericToBinary NumericToBinary = new NumericToBinary();
+        NumericToBinary.setInputFormat(entire_data_train);
 		
-		NumericToNominal numericToNominal0 = new NumericToNominal();
-		numericToNominal0.setInputFormat(entire_data_test);
+        NumericToBinary NumericToBinary0 = new NumericToBinary();
+        NumericToBinary0.setInputFormat(entire_data_test);
           
-        NumericToNominal numericToNominal1 = new NumericToNominal();
-		numericToNominal1.setInputFormat(cluster1);
-		
-		 NumericToNominal numericToNominal2 = new NumericToNominal();
-		numericToNominal2.setInputFormat(cluster2);
-		
-		 NumericToNominal numericToNominal3 = new NumericToNominal();
-		numericToNominal3.setInputFormat(cluster3); 
+        NumericToBinary NumericToBinary1 = new NumericToBinary();
+        NumericToBinary1.setInputFormat(cluster1 );
+          
+        NumericToBinary NumericToBinary2 = new NumericToBinary();
+        NumericToBinary2.setInputFormat(cluster2);
+          
+        NumericToBinary NumericToBinary3 = new NumericToBinary();
+        NumericToBinary3.setInputFormat(cluster3 ); 
+          
 		
 		String[] options= new String[2];
 		options[0] = "-R";
 		options[1] = "first-last";
 		
-		numericToNominal.setOptions(options);
-		numericToNominal1.setOptions(options);
-		numericToNominal2.setOptions(options);
-		numericToNominal3.setOptions(options);
+		 
+        NumericToBinary.setOptions(options);
+        
+        NumericToBinary0.setOptions(options);
+        
+        NumericToBinary1.setOptions(options);
+        
+        NumericToBinary2.setOptions(options);
+        
+        NumericToBinary3.setOptions(options);
 		
-		entire_data_train = Filter.useFilter(entire_data_train, numericToNominal);
-		entire_data_test = Filter.useFilter(entire_data_test, numericToNominal);
-		cluster1 = Filter.useFilter(cluster1, numericToNominal1);
-		cluster2 = Filter.useFilter(cluster2, numericToNominal2);
-		cluster3 = Filter.useFilter(cluster3, numericToNominal3);
+		entire_data_train = Filter.useFilter(entire_data_train,  NumericToBinary);
+		entire_data_test = Filter.useFilter(entire_data_test,  NumericToBinary0);
+		cluster1 = Filter.useFilter(cluster1,  NumericToBinary1);
+		cluster2 = Filter.useFilter(cluster2, NumericToBinary2);
+		cluster3 = Filter.useFilter(cluster3,  NumericToBinary3); 
 		
 		//Save data as .arff file
 		ArffSaver saver = new ArffSaver();
@@ -60,7 +68,7 @@ public class csvtoarff {
         saver.setFile(new File("src\\data\\transactionDataByCusID_train.arff"));
         saver.writeBatch();
         
-        ArffSaver saver0 = new ArffSaver();
+       ArffSaver saver0 = new ArffSaver();
         saver0.setInstances(entire_data_test);
         saver0.setFile(new File("src\\data\\transactionDataByCusID_test.arff"));
         saver0.writeBatch();
