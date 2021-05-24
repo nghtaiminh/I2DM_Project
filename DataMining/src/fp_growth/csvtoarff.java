@@ -13,13 +13,12 @@ public class csvtoarff {
     public static void main(String[] args) throws Exception{
     	
     	Instances entire_data_train = DataSource.read("src\\data\\transactionDataByCusID_train.csv");
-    	Instances entire_data_test = DataSource.read("src\\data\\transactionDataByCusID_test.csv");
         Instances cluster1 = DataSource.read("src\\data\\cluster_1_transaction_data.csv");
         Instances cluster2 = DataSource.read("src\\data\\cluster_2_transaction_data.csv");
         Instances cluster3 = DataSource.read("src\\data\\cluster_3_transaction_data.csv"); 
        
         entire_data_train.setClassIndex(-1);
-        entire_data_test.setClassIndex(-1);
+       
         cluster1.setClassIndex(-1);
         cluster2.setClassIndex(-1);
         cluster3.setClassIndex(-1);
@@ -28,8 +27,6 @@ public class csvtoarff {
         NumericToBinary NumericToBinary = new NumericToBinary();
         NumericToBinary.setInputFormat(entire_data_train);
 		
-        NumericToBinary NumericToBinary0 = new NumericToBinary();
-        NumericToBinary0.setInputFormat(entire_data_test);
           
         NumericToBinary NumericToBinary1 = new NumericToBinary();
         NumericToBinary1.setInputFormat(cluster1 );
@@ -48,16 +45,14 @@ public class csvtoarff {
 		 
         NumericToBinary.setOptions(options);
         
-        NumericToBinary0.setOptions(options);
-        
         NumericToBinary1.setOptions(options);
         
         NumericToBinary2.setOptions(options);
         
         NumericToBinary3.setOptions(options);
 		
+        
 		entire_data_train = Filter.useFilter(entire_data_train,  NumericToBinary);
-		entire_data_test = Filter.useFilter(entire_data_test,  NumericToBinary0);
 		cluster1 = Filter.useFilter(cluster1,  NumericToBinary1);
 		cluster2 = Filter.useFilter(cluster2, NumericToBinary2);
 		cluster3 = Filter.useFilter(cluster3,  NumericToBinary3); 
@@ -68,11 +63,6 @@ public class csvtoarff {
         saver.setFile(new File("src\\data\\transactionDataByCusID_train.arff"));
         saver.writeBatch();
         
-       ArffSaver saver0 = new ArffSaver();
-        saver0.setInstances(entire_data_test);
-        saver0.setFile(new File("src\\data\\transactionDataByCusID_test.arff"));
-        saver0.writeBatch();
-		
         ArffSaver saver1 = new ArffSaver();
         saver1.setInstances(cluster1);
         saver1.setFile(new File("src\\data\\cluster_1_transaction_data.arff"));

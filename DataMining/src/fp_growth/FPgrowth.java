@@ -11,10 +11,7 @@ import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- *
- * @author
- */
+
 public class FPgrowth extends KnowledgeModel {
 
     Instances newData;
