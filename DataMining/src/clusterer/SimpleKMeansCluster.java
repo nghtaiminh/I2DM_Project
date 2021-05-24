@@ -42,7 +42,6 @@ public class SimpleKMeansCluster {
         filteredClusterer.setClusterer(skmeans);
         filteredClusterer.buildClusterer(data);
         fc = filteredClusterer;
-//        System.out.println(filteredClusterer.toString());
     }
 
     public void getCentroids() {
